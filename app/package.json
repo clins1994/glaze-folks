@@ -3,7 +3,7 @@
   "name": "folks",
   "version": "1.0.0",
   "productName": "Folks",
-  "description": "Think aloud. Meet a kindred mind.",
+  "description": "Think aloud and meet a kindred mind",
   "iconDescription": "A calm, dark surface with two soft points of light briefly meeting — a quiet, momentary connection that fades. Think two gentle glows drawn together for a moment against darkness, ephemeral and private, with no permanence or clutter.",
   "private": true,
   "type": "module",
@@ -70,6 +70,6 @@
     "host": {
       "minVersion": "0.11.1.0"
     },
-    "updatedAt": 1785130251340
+    "updatedAt": 1785169226693
   }
 }

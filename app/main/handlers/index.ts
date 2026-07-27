@@ -12,7 +12,6 @@ import { registerStorageHandlers } from "./storage.js";
 import { registerIdentityHandlers } from "./identity.js";
 import { registerCommunityHandlers } from "./community.js";
 import { registerDiscoveryHandlers } from "./discovery.js";
-import { getSettingsWindow, openSettingsWindow } from "../windows/settings-window.js";
 
 import { ipcMain, logger } from "@glaze/core/backend";
 
@@ -31,15 +30,6 @@ export function registerHandlers(): void {
   // __dirname = build/main, so two levels up is the app root
   ipcMain.handle("app:getProjectPath", async () => {
     return path.join(__dirname, "..", "..");
-  });
-
-  // Settings window handlers
-  ipcMain.handle("window:openSettings", async (_event) => {
-    await openSettingsWindow();
-  });
-
-  ipcMain.handle("window:closeSettings", async (_event) => {
-    getSettingsWindow()?.close();
   });
 
   // Folks device-local storage (private conversation, worldview, preferences)

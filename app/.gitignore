@@ -5,7 +5,7 @@ node_modules/
 .glaze_memory/
 
 # App icons (binary, auto-generated)
-app-icon.*
+/app-icon.*
 
 # OS files
 .DS_Store

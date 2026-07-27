@@ -21,7 +21,7 @@ export function Composer({ value, onChange, onSend, disabled, placeholder, maxLe
   const canSend = value.trim().length > 0 && !disabled;
 
   return (
-    <div className="flex items-end gap-2">
+    <div className="flex items-center gap-1 rounded-pill border border-field bg-control-subtle px-2 py-1.5">
       <Textarea
         value={value}
         onChange={(event) => onChange(event.target.value)}
@@ -35,8 +35,8 @@ export function Composer({ value, onChange, onSend, disabled, placeholder, maxLe
         }}
         disabled={disabled}
         maxLength={maxLength ?? SESSION_MESSAGE_MAX}
-        placeholder={placeholder ?? "Type or use Dictation (press fn twice)…"}
-        className="flex-1"
+        placeholder={placeholder ?? "What's on your mind?"}
+        className="min-h-0 flex-1 resize-none border-0 bg-transparent px-2 py-1"
       />
       <Button
         iconOnly

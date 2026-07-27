@@ -9,57 +9,21 @@
 @source not "./preload.ts";
 @source not "./dev/**/*";
 
-/* ── Folks: always-dark Living Orbit theme ─────────────────────────────────
- * Folks is a single-appearance (dark) immersive world. main/index.ts forces
- * the dark appearance so elevated chrome (dialogs, selects) matches. Seeds are
- * overridden for both :root and .dark so the theme holds regardless.
+/* ── Folks theme: black / gray / white with a sunset accent ────────────────
+ * Matches the app icon (two figures in black and warm white, joined by a
+ * sunset-amber glow). Folks is single-appearance (dark) — main/index.ts
+ * forces the dark appearance so elevated chrome (dialogs, selects) matches.
+ * Seeds are overridden for both :root and .dark so the theme holds regardless.
+ * --accent is pinned to --theme-accent (bypassing --color-system-accent) —
+ * Folks' brand accent is fixed and shouldn't shift with the user's macOS
+ * system accent color preference.
  */
 :root,
 .dark {
-  --bg: #111315;
-  --bg-secondary: #16191c;
-  --fg: #f5f1e8;
-  --theme-accent: #3aafa1;
-  --selection: #3aafa1;
-
-  /* Brand palette — referenced directly by the Living Orbit canvas */
-  --folks-night: #111315;
-  --folks-warm: #f5f1e8;
-  --folks-teal: #3aafa1;
-  --folks-coral: #f26b5e;
-  --folks-saffron: #e5b94b;
-  --folks-moss: #789262;
-  --folks-gray: #a7adb4;
-}
-
-/* ── Living Orbit motion ───────────────────────────────────────────────────
- * All orbit animation carries the `folks-motion` class so it can be disabled
- * wholesale under prefers-reduced-motion (accessibility requirement).
- */
-@keyframes folks-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-@keyframes folks-spin-reverse {
-  to {
-    transform: rotate(-360deg);
-  }
-}
-@keyframes folks-breathe {
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 0.92;
-  }
-  50% {
-    transform: scale(1.05);
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .folks-motion {
-    animation: none !important;
-  }
+  --bg: #121212;
+  --bg-secondary: #1c1c1e;
+  --fg: #f6f4ef;
+  --theme-accent: #e2793f;
+  --accent: var(--theme-accent);
+  --selection: #e2793f;
 }

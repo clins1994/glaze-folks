@@ -8,10 +8,11 @@
 import * as React from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Button, Callout, Status, Text, toast } from "@glaze/core/components";
+import { Button, Callout, Text, toast } from "@glaze/core/components";
 import { useGlazeAI } from "@glaze/core/hooks";
-import { Settings } from "lucide-react";
+import { Github } from "lucide-react";
 
+import folksIcon from "../../assets/app-icon.png";
 import type { ConversationMessage, DiscoveryMatch, TurnResult } from "../../lib/folks-types";
 import { useIdentity, useRelayStatus } from "../../lib/use-community";
 import { discoveryKeys, useDiscovery, useDiscoveryRealtime } from "../../lib/use-discovery";
@@ -19,9 +20,10 @@ import { acceptMatch, dismissMatch, runAiTurn, syncDiscovery } from "../../lib/d
 import { DEFAULT_PREFS, loadPrefs, savePrefs, type FolksPrefs } from "../../lib/folks-store";
 import { Conversation } from "./conversation";
 import { Composer } from "./composer";
-import { TopicStatus } from "./topic-status";
-import { MatchNotice } from "./match-notice";
+import { TopicQueue } from "./topic-queue";
 import { PrivacyDisclosure } from "./privacy-disclosure";
+
+const REPO_URL = "https://github.com/clins1994/glaze-folks";
 
 const BLOCKED_MESSAGE: Record<string, string> = {
   "needs-consent": "Folks needs your OK to use AI. Try again when you're ready.",
@@ -45,7 +47,6 @@ export function DiscoveryScreen() {
 
   useDiscoveryRealtime(uid);
   const discovery = useDiscovery(uid);
-  const topics = discovery.data?.topics ?? [];
   const matches = discovery.data?.matches ?? [];
 
   const [messages, setMessages] = React.useState<ConversationMessage[]>([]);
@@ -156,35 +157,30 @@ export function DiscoveryScreen() {
     }
   };
 
-  const discoveryStatus = !configured
-    ? { variant: "neutral" as const, label: "Discovery offline" }
-    : uid
-      ? { variant: "success" as const, label: "Discovery on" }
-      : { variant: "loading" as const, label: "Connecting" };
-
   return (
     <div className="flex h-full w-full flex-col text-primary">
       <header className="drag-region flex h-14 shrink-0 items-center justify-between pl-[92px] pr-3">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 rounded-pill border border-field bg-control-subtle py-1 pr-3.5 pl-1.5">
+          <img src={folksIcon} alt="" className="size-6 shrink-0 rounded-lg" draggable={false} />
           <Text variant="strong">Folks</Text>
-          <Status variant={discoveryStatus.variant}>{discoveryStatus.label}</Status>
         </div>
-        <div className="no-drag">
+        <div className="no-drag flex items-center rounded-pill border border-field bg-control-subtle p-1">
           <Button
             iconOnly
             variant="transparent"
             size="small"
-            aria-label="Settings"
-            onClick={() => void window.glazeAPI.glaze.ipc.invoke("window:openSettings")}
+            radius="full"
+            aria-label="View source on GitHub"
+            onClick={() => void window.glazeAPI.shell.openExternal(REPO_URL)}
           >
-            <Settings />
+            <Github />
           </Button>
         </div>
       </header>
 
       <Conversation messages={messages} thinking={thinking} />
 
-      <div className="shrink-0 border-t border-separator px-6 py-3">
+      <div className="shrink-0 px-6 py-3">
         <div className="mx-auto flex w-full max-w-[640px] flex-col gap-3">
           {blocked ? (
             <Callout
@@ -199,18 +195,14 @@ export function DiscoveryScreen() {
             </Callout>
           ) : null}
 
-          {matches.map((match) => (
-            <MatchNotice
-              key={match.id}
-              match={match}
-              connecting={connectingId === match.id}
-              onConnect={(m) => void handleConnect(m)}
-              onDismiss={(m) => void handleDismiss(m)}
-              onOpenRoom={openRoom}
-            />
-          ))}
+          <TopicQueue
+            matches={matches}
+            connectingId={connectingId}
+            onConnect={(m) => void handleConnect(m)}
+            onDismiss={(m) => void handleDismiss(m)}
+            onOpenRoom={openRoom}
+          />
 
-          <TopicStatus topics={topics} />
           <Composer value={draft} onChange={setDraft} onSend={send} disabled={thinking} />
         </div>
       </div>

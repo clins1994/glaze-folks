@@ -93,16 +93,15 @@ export function RoomView() {
 
   return (
     <div className="flex h-full w-full flex-col text-primary">
-      <header className="drag-region flex h-14 shrink-0 items-center justify-between pl-[92px] pr-3">
-        <div className="flex min-w-0 flex-col">
-          <Text variant="small" color="tertiary">
-            Talking about
-          </Text>
-          <Text variant="strong" className="truncate">
-            {topic}
-          </Text>
+      <header className="drag-region relative flex h-14 shrink-0 items-center pl-[92px] pr-3">
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center px-[100px]">
+          <div className="flex min-w-0 items-center rounded-pill border border-field bg-control-subtle px-3.5 py-1">
+            <Text variant="strong" className="truncate">
+              {topic}
+            </Text>
+          </div>
         </div>
-        <div className="no-drag flex items-center gap-3">
+        <div className="no-drag ml-auto flex items-center gap-3">
           {remainingMs !== null && !expired ? (
             <span className="flex items-center gap-1.5 text-tertiary">
               <Clock className="size-4 shrink-0" />
@@ -136,7 +135,7 @@ export function RoomView() {
         </div>
       </ScrollArea>
 
-      <div className="shrink-0 border-t border-separator px-6 py-3">
+      <div className="shrink-0 px-6 py-3">
         <div className="mx-auto flex w-full max-w-[640px] flex-col gap-2">
           {expired ? (
             <Text variant="small" color="tertiary" align="center">

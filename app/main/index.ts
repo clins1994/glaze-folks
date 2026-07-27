@@ -12,7 +12,6 @@ import { app, BrowserWindow, Menu, nativeTheme, logger, initDevToolsButtonState 
 
 import { registerHandlers } from "./handlers/index.js";
 import { getPreloadPath, getWindowUrl } from "./windows/window-paths.js";
-import { openSettingsWindow } from "./windows/settings-window.js";
 import { clearDiscovery } from "./services/discovery.js";
 
 // Best-effort: drop the caller's discovery footprint (active topics) when the
@@ -114,8 +113,8 @@ async function createMainWindow() {
     // positioned to sit inside that custom top bar.
     titleBarStyle: "hidden",
     toolbarStyle: "none",
-    trafficLightPosition: { x: 18, y: 24 },
-    backgroundColor: "#111315",
+    trafficLightPosition: { x: 20, y: 20 },
+    backgroundColor: "#121212",
     show: false, // Don't show until WebView is ready (prevents flickering)
     webPreferences: {
       preload: getPreloadPath(),
@@ -179,13 +178,6 @@ async function setupApplicationMenu() {
       submenu: [
         { role: "about" },
         { type: "separator" },
-        {
-          label: "Settings…",
-          icon: "gearshape",
-          accelerator: "Command+,",
-          click: async () => await openSettingsWindow(),
-        },
-        { type: "separator" },
         { role: "services" },
         { type: "separator" },
         { role: "hide" },
@@ -201,7 +193,7 @@ async function setupApplicationMenu() {
     { role: "windowMenu" },
   ]);
   Menu.setApplicationMenu(menu);
-  logger.info("main", "Application menu configured with Settings");
+  logger.info("main", "Application menu configured");
 }
 
 // ── Lifecycle events ──────────────────────────────────────────────────
