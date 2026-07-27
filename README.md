@@ -79,7 +79,7 @@ MCP configuration, generated dependencies, memory, icons, and logs.
     </td>
     <td>
       <strong><a href="https://supabase.com/">Supabase</a></strong><br>
-      Anonymous-first authentication, PostgreSQL, Row Level Security, Realtime
+      Anonymous authentication, PostgreSQL, Row Level Security, Realtime
       events, topic matching, temporary rooms, and expiry cleanup.
     </td>
   </tr>
@@ -91,8 +91,8 @@ MCP configuration, generated dependencies, memory, icons, and logs.
     </td>
     <td>
       <strong><a href="https://resend.com/">Resend</a></strong><br>
-      SMTP delivery for Supabase Auth emails that let users protect and recover
-      their identity.
+      Provisioned for planned email-based identity protection and recovery;
+      dormant in the current anonymous-only release.
     </td>
   </tr>
 </table>
@@ -156,7 +156,9 @@ third-party marks are excluded; see [NOTICE](NOTICE).
 
 The current build includes private Glaze AI conversation, English topic
 derivation, global realtime matching, mutual consent, temporary human rooms,
-anonymous-first identity, ten-minute inactivity expiry, and an in-app roadmap.
+per-install anonymous identity, ten-minute inactivity expiry, and an in-app
+roadmap. Email-based identity protection and recovery are not exposed in the
+current interface.
 
 Production Supabase infrastructure is configured. The database suite, Glaze
 build checks, real AI turn, and external two-user match-to-room flow have been

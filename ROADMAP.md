@@ -30,7 +30,7 @@ change as people use the app and teach us what is useful, confusing, or unsafe.
 - `Connect` and `Not now` choices, followed by mutual acceptance.
 - Temporary one-to-one human rooms with a visible inactivity countdown.
 - Ten-minute inactivity expiry that refreshes while a topic or room is active.
-- Anonymous-first identity.
+- Per-install anonymous identity with no account or recovery interface.
 - No profiles, friends list, feed, or chat history.
 - Supabase Row Level Security and recipient-scoped match records.
 - An in-app Settings roadmap.
@@ -62,6 +62,14 @@ change as people use the app and teach us what is useful, confusing, or unsafe.
 - Add optional translation inside temporary rooms with clear disclosure.
 
 ## Planned
+
+### Optional Identity Continuity
+
+- Let a user optionally protect an anonymous identity with an email address.
+- Support recovery on a new Mac through Supabase Auth and Resend.
+- Keep account creation unnecessary for discovery and temporary conversations.
+- Explain clearly that identity recovery does not create a profile, friends
+  list, or retained chat history.
 
 ### Richer Temporary Conversations
 

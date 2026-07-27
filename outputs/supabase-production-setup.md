@@ -40,8 +40,11 @@ Enabled:
 - Manual identity linking
 - Email confirmation
 
-Folks starts with an anonymous authenticated identity. A user may later attach
-and verify an email address without changing their Supabase user ID.
+Folks starts with an anonymous authenticated identity. The backend and email
+infrastructure support attaching and verifying an email address without
+changing the Supabase user ID, but the current anonymous-only interface does
+not expose that flow. Optional identity protection and recovery are planned for
+a later release.
 
 ## Email
 
@@ -51,8 +54,9 @@ and verify an email address without changing their Supabase user ID.
 - Resend region: `us-east-1`
 
 The Magic Link and Change Email Address templates use `{{ .Token }}` for a
-six-digit code entered inside Folks. Deep links are deferred until Folks
-registers and handles a macOS callback URL.
+six-digit code. They remain dormant until Folks exposes identity protection and
+recovery. Deep links are deferred until Folks registers and handles a macOS
+callback URL.
 
 Template sources:
 
