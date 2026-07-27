@@ -33,7 +33,6 @@ change as people use the app and teach us what is useful, confusing, or unsafe.
 - Per-install anonymous identity with no account or recovery interface.
 - No profiles, friends list, feed, or chat history.
 - Supabase Row Level Security and recipient-scoped match records.
-- An in-app Settings roadmap.
 
 ## High Priority
 
@@ -124,6 +123,6 @@ are research topics, not commitments.
 
 ## How To Follow The Work
 
-The in-app roadmap stays intentionally compact. This file is the fuller source
-of truth for direction and sequencing. Concrete implementation work can be
-tracked in GitHub Issues as each phase becomes ready to build.
+This file is the public source of truth for direction and sequencing. Concrete
+implementation work can be tracked in GitHub Issues as each phase becomes ready
+to build.

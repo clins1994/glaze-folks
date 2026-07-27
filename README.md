@@ -156,9 +156,8 @@ third-party marks are excluded; see [NOTICE](NOTICE).
 
 The current build includes private Glaze AI conversation, English topic
 derivation, global realtime matching, mutual consent, temporary human rooms,
-per-install anonymous identity, ten-minute inactivity expiry, and an in-app
-roadmap. Email-based identity protection and recovery are not exposed in the
-current interface.
+per-install anonymous identity, and ten-minute inactivity expiry. Email-based
+identity protection and recovery are not exposed in the current interface.
 
 Production Supabase infrastructure is configured. The database suite, Glaze
 build checks, real AI turn, and external two-user match-to-room flow have been
