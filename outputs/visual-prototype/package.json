@@ -1,0 +1,11 @@
+{
+  "name": "folks-visual-prototype",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prototype": "node server.mjs"
+  },
+  "dependencies": {
+    "lucide": "^0.468.0"
+  }
+}

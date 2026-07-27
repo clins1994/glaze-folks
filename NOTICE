@@ -1,0 +1,21 @@
+Folks
+Copyright 2026 Caio Lins
+
+The Apache License 2.0 in LICENSE applies to the source code and documentation
+in this repository, except as noted below.
+
+Media and branding under assets/ and store-assets/ are not licensed under the
+Apache License 2.0. They remain all rights reserved by their respective rights
+holders and are included only for project presentation, identification, or
+attribution. In particular:
+
+- assets/team-caio.png contains the personal image and likeness of Caio Lins.
+- assets/team-chatgpt.png contains an OpenAI mark.
+- assets/team-glaze.png contains a Glaze/Raycast mark.
+- assets/service-resend.png contains a Resend mark.
+- assets/service-supabase.png contains a Supabase mark.
+- assets/folks-icon.png and store-assets/ contain Folks branding and release
+  media.
+
+Third-party dependencies remain subject to their own licenses. No trademark
+rights are granted by the Apache License 2.0.

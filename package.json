@@ -1,0 +1,7 @@
+{
+  "name": "glaze-folks-workspace",
+  "private": true,
+  "scripts": {
+    "sync": "bun run scripts/sync-glaze.ts"
+  }
+}
