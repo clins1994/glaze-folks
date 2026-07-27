@@ -1,3 +1,5 @@
+ℹ️ the Glaze app is a bit stripped down version of this PRD because I did not have time to add/test all the features
+
 # Folks
 
 Competition product requirements document for the Glaze Awards
