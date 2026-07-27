@@ -7,21 +7,18 @@
 
 import * as React from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Button, Callout, Text, toast } from "@glaze/core/components";
+import { useQueryClient } from "@tanstack/react-query";
+import { Button, Callout, toast } from "@glaze/core/components";
 import { useGlazeAI } from "@glaze/core/hooks";
 import { Github } from "lucide-react";
 
-import folksIcon from "../../assets/app-icon.png";
 import type { ConversationMessage, DiscoveryMatch, TurnResult } from "../../lib/folks-types";
 import { useIdentity, useRelayStatus } from "../../lib/use-community";
 import { discoveryKeys, useDiscovery, useDiscoveryRealtime } from "../../lib/use-discovery";
 import { acceptMatch, dismissMatch, runAiTurn, syncDiscovery } from "../../lib/discovery-store";
-import { DEFAULT_PREFS, loadPrefs, savePrefs, type FolksPrefs } from "../../lib/folks-store";
 import { Conversation } from "./conversation";
 import { Composer } from "./composer";
 import { TopicQueue } from "./topic-queue";
-import { PrivacyDisclosure } from "./privacy-disclosure";
 
 const REPO_URL = "https://github.com/clins1994/glaze-folks";
 
@@ -55,15 +52,6 @@ export function DiscoveryScreen() {
   const [blocked, setBlocked] = React.useState<string | null>(null);
   const [connectingId, setConnectingId] = React.useState<string | null>(null);
   const { enableInHost } = useGlazeAI();
-
-  // First-use privacy disclosure (device-local preference).
-  const prefs = useQuery<FolksPrefs>({ queryKey: ["prefs"], queryFn: loadPrefs, staleTime: Infinity });
-  const showDisclosure = prefs.data ? prefs.data.disclosureAcceptedAt === null : false;
-  const acceptDisclosure = async () => {
-    const next: FolksPrefs = { ...(prefs.data ?? DEFAULT_PREFS), disclosureAcceptedAt: Date.now() };
-    await savePrefs(next);
-    queryClient.setQueryData(["prefs"], next);
-  };
 
   const generate = React.useCallback(
     async (history: ConversationMessage[]) => {
@@ -159,11 +147,7 @@ export function DiscoveryScreen() {
 
   return (
     <div className="flex h-full w-full flex-col text-primary">
-      <header className="drag-region flex h-14 shrink-0 items-center justify-between pl-[92px] pr-3">
-        <div className="flex items-center gap-2 rounded-pill border border-field bg-control-subtle py-1 pr-3.5 pl-1.5">
-          <img src={folksIcon} alt="" className="size-6 shrink-0 rounded-lg" draggable={false} />
-          <Text variant="strong">Folks</Text>
-        </div>
+      <header className="drag-region flex h-14 shrink-0 items-center justify-end pl-[92px] pr-3">
         <div className="no-drag flex items-center rounded-pill border border-field bg-control-subtle p-1">
           <Button
             iconOnly
@@ -195,19 +179,23 @@ export function DiscoveryScreen() {
             </Callout>
           ) : null}
 
-          <TopicQueue
-            matches={matches}
-            connectingId={connectingId}
-            onConnect={(m) => void handleConnect(m)}
-            onDismiss={(m) => void handleDismiss(m)}
-            onOpenRoom={openRoom}
-          />
-
-          <Composer value={draft} onChange={setDraft} onSend={send} disabled={thinking} />
+          {matches.length > 0 ? (
+            <div className="flex flex-col divide-y divide-separator overflow-hidden rounded-card border border-field bg-control-subtle">
+              <TopicQueue
+                matches={matches}
+                connectingId={connectingId}
+                onConnect={(m) => void handleConnect(m)}
+                onDismiss={(m) => void handleDismiss(m)}
+                onOpenRoom={openRoom}
+                bare
+              />
+              <Composer value={draft} onChange={setDraft} onSend={send} disabled={thinking} bare />
+            </div>
+          ) : (
+            <Composer value={draft} onChange={setDraft} onSend={send} disabled={thinking} />
+          )}
         </div>
       </div>
-
-      <PrivacyDisclosure open={showDisclosure} onAccept={() => void acceptDisclosure()} />
     </div>
   );
 }

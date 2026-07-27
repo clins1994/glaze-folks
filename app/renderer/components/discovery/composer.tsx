@@ -14,14 +14,22 @@ interface ComposerProps {
   disabled?: boolean;
   placeholder?: string;
   maxLength?: number;
+  /** Omit the outer border/rounding/background when composed inside another bordered group. */
+  bare?: boolean;
 }
 
-export function Composer({ value, onChange, onSend, disabled, placeholder, maxLength }: ComposerProps) {
+export function Composer({ value, onChange, onSend, disabled, placeholder, maxLength, bare }: ComposerProps) {
   const composingRef = useRef(false);
   const canSend = value.trim().length > 0 && !disabled;
 
   return (
-    <div className="flex items-center gap-1 rounded-pill border border-field bg-control-subtle px-2 py-1.5">
+    <div
+      className={
+        bare
+          ? "flex items-center gap-1 px-2 py-1.5"
+          : "flex items-center gap-1 rounded-pill border border-field bg-control-subtle px-2 py-1.5"
+      }
+    >
       <Textarea
         value={value}
         onChange={(event) => onChange(event.target.value)}

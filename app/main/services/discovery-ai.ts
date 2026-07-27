@@ -152,7 +152,7 @@ const SYSTEM = [
   "In addition to replying, privately derive the CURRENT topics the person is actively discussing, so Folks can quietly look for another person discussing something similar.",
   "Rules for topics:",
   "- Return 1 to 3 topics, each a SPECIFIC two-to-five word English phrase (e.g. 'Japanese grammar', 'sourdough baking', 'training for a marathon'). Prefer specificity.",
-  "- 'keys' are canonical, lowercase, hyphenated English slugs for the topic (e.g. 'japanese-grammar', 'japanese-honorifics'). Always English, even if the person writes in another language.",
+  "- 'keys' are canonical, lowercase, hyphenated English slugs for the topic. Discovery only connects two people when one of their keys matches EXACTLY (or is a near-identical spelling), so ALWAYS include one short, bare anchor key naming just the core subject (e.g. 'basketball', 'sourdough') alongside up to 2 more specific variants (e.g. 'pickup-basketball', 'japanese-honorifics'). Always English, even if the person writes in another language.",
   "- Track the CURRENT subject using recent context; when the conversation moves on, return the new topic, not old ones.",
   "- Do NOT emit generic topics on their own ('work', 'life', 'chat', 'programming').",
   "- NEVER emit identifying details, names, locations, or sensitive topics: health, sexuality, religion, politics, finances, personal crises, or precise location. If the message is only about those, return an empty topics array and still reply kindly.",

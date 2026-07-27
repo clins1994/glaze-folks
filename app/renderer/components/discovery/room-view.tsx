@@ -6,10 +6,11 @@
 import * as React from "react";
 import { useNavigate, useParams, useSearch } from "@tanstack/react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Button, Callout, ScrollArea, Text, toast } from "@glaze/core/components";
+import { Button, EmptyState, ScrollArea, Text, toast } from "@glaze/core/components";
 import { cn } from "@glaze/core/utils";
 import { Clock, LogOut } from "lucide-react";
 
+import folksIcon from "../../assets/app-icon.png";
 import type { SessionMessage } from "../../lib/folks-types";
 import {
   communityKeys,
@@ -19,7 +20,7 @@ import {
   useSessionParticipants,
   useSessionRealtimeSync,
 } from "../../lib/use-community";
-import { useRoomHeartbeat, useRoomInfo } from "../../lib/use-discovery";
+import { discoveryKeys, useRoomHeartbeat, useRoomInfo } from "../../lib/use-discovery";
 import { postSessionMessage } from "../../lib/community-store";
 import { leaveSession } from "../../lib/discovery-store";
 import { Composer } from "./composer";
@@ -47,6 +48,14 @@ export function RoomView() {
   useSessionRealtimeSync(uid, sessionId);
   const roomInfo = useRoomInfo(uid, sessionId);
   useRoomHeartbeat(sessionId);
+
+  // Any message activity (ours or the counterpart's, via realtime) pushes the
+  // server's inactivity clock out — refresh our cached room info alongside it so
+  // the countdown can't read stale and falsely show "faded" before the next poll.
+  React.useEffect(() => {
+    if (!uid || !sessionId) return;
+    void queryClient.invalidateQueries({ queryKey: discoveryKeys.room(uid, sessionId) });
+  }, [messagesQuery.dataUpdatedAt, uid, sessionId, queryClient]);
 
   const [draft, setDraft] = React.useState("");
   const [now, setNow] = React.useState(() => Date.now());
@@ -93,15 +102,15 @@ export function RoomView() {
 
   return (
     <div className="flex h-full w-full flex-col text-primary">
-      <header className="drag-region relative flex h-14 shrink-0 items-center pl-[92px] pr-3">
+      <header className="drag-region relative flex h-14 shrink-0 items-center justify-end pl-[92px] pr-3">
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center px-[100px]">
-          <div className="flex min-w-0 items-center rounded-pill border border-field bg-control-subtle px-3.5 py-1">
+          <div className="flex h-[34px] min-w-0 items-center rounded-pill border border-field bg-control-subtle px-3.5">
             <Text variant="strong" className="truncate">
               {topic}
             </Text>
           </div>
         </div>
-        <div className="no-drag ml-auto flex items-center gap-3">
+        <div className="no-drag flex items-center gap-3">
           {remainingMs !== null && !expired ? (
             <span className="flex items-center gap-1.5 text-tertiary">
               <Clock className="size-4 shrink-0" />
@@ -110,30 +119,35 @@ export function RoomView() {
               </Text>
             </span>
           ) : null}
-          <Button size="small" variant="filled" onClick={() => void leave()}>
+          <Button size="small" variant="muted" className="h-[34px] border-field px-3.5" onClick={() => void leave()}>
             <LogOut />
             Leave
           </Button>
         </div>
       </header>
 
-      <ScrollArea
-        autoScrollToBottom
-        autoScrollDeps={[messages]}
-        className="flex-1 min-h-0"
-        viewportClassName="px-6 py-4"
-      >
-        <div className="mx-auto flex w-full max-w-[640px] flex-col gap-3">
-          <Callout color="secondary">
-            This is a private, temporary room — no AI takes part. Sharing contact details is voluntary;
-            anything you send can be copied or saved by the other person. Nothing is kept once the room
-            fades.
-          </Callout>
-          {messages.map((message) => (
-            <RoomBubble key={message.id} message={message} />
-          ))}
+      {messages.length === 0 ? (
+        <div className="flex flex-1 items-center justify-center px-6">
+          <EmptyState
+            media={<img src={folksIcon} alt="" className="size-12 rounded-xl" draggable={false} />}
+            title={topic}
+            description="This is a private, temporary room — no AI takes part. Sharing contact details is voluntary; anything you send can be copied or saved by the other person. Nothing is kept once the room fades. Sending messages keeps the room alive by resetting the fade timer."
+          />
         </div>
-      </ScrollArea>
+      ) : (
+        <ScrollArea
+          autoScrollToBottom
+          autoScrollDeps={[messages]}
+          className="flex-1 min-h-0"
+          viewportClassName="px-6 py-4"
+        >
+          <div className="mx-auto flex w-full max-w-[640px] flex-col gap-3">
+            {messages.map((message) => (
+              <RoomBubble key={message.id} message={message} />
+            ))}
+          </div>
+        </ScrollArea>
+      )}
 
       <div className="shrink-0 px-6 py-3">
         <div className="mx-auto flex w-full max-w-[640px] flex-col gap-2">

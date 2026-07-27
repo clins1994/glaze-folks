@@ -14,8 +14,11 @@ import {
   CollapsibleTrigger,
   Status,
   Text,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
 } from "@glaze/core/components";
-import { Trash2 } from "lucide-react";
+import { Handshake, Trash2, UserPlus } from "lucide-react";
 
 import type { DiscoveryMatch } from "../../lib/folks-types";
 
@@ -50,9 +53,11 @@ interface TopicQueueProps {
   onConnect: (match: DiscoveryMatch) => void;
   onDismiss: (match: DiscoveryMatch) => void;
   onOpenRoom: (match: DiscoveryMatch) => void;
+  /** Omit the outer border/rounding/background when composed inside another bordered group. */
+  bare?: boolean;
 }
 
-export function TopicQueue({ matches, connectingId, onConnect, onDismiss, onOpenRoom }: TopicQueueProps) {
+export function TopicQueue({ matches, connectingId, onConnect, onDismiss, onOpenRoom, bare }: TopicQueueProps) {
   const groups = React.useMemo(() => groupMatches(matches), [matches]);
   const hasActive = groups.some((g) => g.pending || g.mutual);
   const wasActive = React.useRef(false);
@@ -66,7 +71,11 @@ export function TopicQueue({ matches, connectingId, onConnect, onDismiss, onOpen
   if (groups.length === 0) return null;
 
   return (
-    <CollapsibleRoot open={open} onOpenChange={setOpen} className="rounded-card border border-field bg-control-subtle">
+    <CollapsibleRoot
+      open={open}
+      onOpenChange={setOpen}
+      className={bare ? undefined : "rounded-card border border-field bg-control-subtle"}
+    >
       <CollapsibleTrigger variant="row" className="w-full gap-2 px-3 py-2.5">
         <CollapsibleChevron />
         <Text variant="regular" color="secondary">
@@ -123,7 +132,7 @@ function TopicRow({ group, connecting, onConnect, onDismiss, onOpenRoom }: Topic
           handleActivate();
         }
       }}
-      className="group flex cursor-pointer items-center gap-2 px-3 py-2.5 hover:bg-control"
+      className="group flex cursor-pointer items-center gap-2 py-2.5 pl-3 pr-2 hover:bg-control"
     >
       <div className="flex min-w-0 flex-1 flex-col">
         <Text variant="regular" className="truncate">
@@ -137,33 +146,64 @@ function TopicRow({ group, connecting, onConnect, onDismiss, onOpenRoom }: Topic
       </div>
 
       {mutual ? (
-        <Button
-          size="small"
-          variant="accent"
-          onClick={(event) => {
-            event.stopPropagation();
-            onOpenRoom(mutual);
-          }}
-        >
-          Open room
-        </Button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              iconOnly
+              size="small"
+              variant="accent"
+              aria-label="Connect"
+              onClick={(event) => {
+                event.stopPropagation();
+                onOpenRoom(mutual);
+              }}
+            >
+              <Handshake />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Connect</TooltipContent>
+        </Tooltip>
       ) : pending ? (
         <Status variant="loading">Waiting</Status>
       ) : (
-        <Button
-          iconOnly
-          variant="transparent"
-          size="small"
-          className="opacity-0 group-hover:opacity-100"
-          aria-label="Not interested in this topic"
-          disabled={connecting}
-          onClick={(event) => {
-            event.stopPropagation();
-            matches.forEach((match) => onDismiss(match));
-          }}
-        >
-          <Trash2 />
-        </Button>
+        <div className="-my-[5px] flex items-center gap-1 opacity-0 group-hover:opacity-100">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                iconOnly
+                variant="transparent"
+                size="small"
+                aria-label="Invite to connect"
+                disabled={connecting}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleActivate();
+                }}
+              >
+                <UserPlus />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Invite to connect</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                iconOnly
+                variant="transparent"
+                size="small"
+                aria-label="Not interested in this topic"
+                disabled={connecting}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  matches.forEach((match) => onDismiss(match));
+                }}
+              >
+                <Trash2 />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Not interested</TooltipContent>
+          </Tooltip>
+        </div>
       )}
     </div>
   );

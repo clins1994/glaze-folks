@@ -3,6 +3,7 @@
 import { EmptyState, ScrollArea, Text } from "@glaze/core/components";
 import { cn } from "@glaze/core/utils";
 
+import folksIcon from "../../assets/app-icon.png";
 import type { ConversationMessage } from "../../lib/folks-types";
 
 export function Conversation({
@@ -16,8 +17,9 @@ export function Conversation({
     return (
       <div className="flex flex-1 items-center justify-center px-6">
         <EmptyState
-          title="What's on your mind?"
-          description="Talk it through here. Folks quietly looks for someone else discussing something similar — your messages stay private."
+          media={<img src={folksIcon} alt="" className="size-12 rounded-xl" draggable={false} />}
+          title="Welcome to Folks"
+          description="Talk it through here — Folks quietly looks for someone else discussing something similar. Your messages stay private; only AI-derived topic labels are ever shared, and nothing is saved."
         />
       </div>
     );

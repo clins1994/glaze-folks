@@ -9,10 +9,11 @@
 @source not "./preload.ts";
 @source not "./dev/**/*";
 
-/* ── Folks theme: black / gray / white with a sunset accent ────────────────
- * Matches the app icon (two figures in black and warm white, joined by a
- * sunset-amber glow). Folks is single-appearance (dark) — main/index.ts
- * forces the dark appearance so elevated chrome (dialogs, selects) matches.
+/* ── Folks theme: black / gray / white ──────────────────────────────────────
+ * Matches the app icon (two figures in black and warm white, set against the
+ * icon's slate-gray backdrop). Folks is single-appearance (dark) —
+ * main/index.ts forces the dark appearance so elevated chrome (dialogs,
+ * selects) matches.
  * Seeds are overridden for both :root and .dark so the theme holds regardless.
  * --accent is pinned to --theme-accent (bypassing --color-system-accent) —
  * Folks' brand accent is fixed and shouldn't shift with the user's macOS
@@ -23,7 +24,7 @@
   --bg: #121212;
   --bg-secondary: #1c1c1e;
   --fg: #f6f4ef;
-  --theme-accent: #e2793f;
+  --theme-accent: #64748b;
   --accent: var(--theme-accent);
-  --selection: #e2793f;
+  --selection: #64748b;
 }
